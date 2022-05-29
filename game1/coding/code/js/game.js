@@ -8,6 +8,12 @@ const key = {
     }
 }
 
+// 생성된 수리검 관리할 배열 생성
+const bulletComProp = {
+    arr: [],
+    launch: false, // 수리검 모션중인지 체크
+}
+
 // 자주 사용되는 값들 전역 처리
 const gameProp = {
     screenWidth: window.innerWidth,
@@ -17,8 +23,11 @@ const gameProp = {
 // 키모션 딜레이 제거
 const renderGame = () => {
     // 재귀호출
-    window.requestAnimationFrame(renderGame);
     hero.keyMotion();
+    bulletComProp.arr.forEach((arr, i) => {
+        arr.moveBullet();
+    })
+    window.requestAnimationFrame(renderGame);
 }
 
 // 게임에 필요한 이벤트를 추가하고 관리

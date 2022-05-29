@@ -27,7 +27,12 @@ class Hero {
         if(key.keyDown['attack']) {
             this.el.classList.add('attack');
 
-            new Bullet();
+            if (!bulletComProp.launch) {
+                bulletComProp.arr.push(new Bullet());
+                console.log(bulletComProp.arr.length)
+                
+                bulletComProp.launch = true;
+            }
         }
         
         if(!key.keyDown['left'] && !key.keyDown['right']) {
@@ -36,6 +41,8 @@ class Hero {
 
         if(!key.keyDown['attack']) {
             this.el.classList.remove('attack');
+
+            bulletComProp.launch = false;
         }
 
         this.el.parentNode.style.transform = `translateX(${this.movex}px)`
@@ -68,6 +75,8 @@ class Bullet {
         this.el.className = 'hero_bullet';
         this.x = 0;
         this.y = 0;
+        this.speed = 30; // 수리검의 속도
+        this.distance = 0; // 수리검의 이동거리
         this.init();
     }
 
@@ -75,8 +84,15 @@ class Bullet {
         // 수리검 발사 위치
         this.x = hero.position().left + hero.size().width / 2;
         this.y = hero.position().bottom - hero.size().height / 2;
+        this.distance = this.x;
         
         this.el.style.transform = `translate(${this.x}px, ${this.y}px)`
         this.parentNode.appendChild(this.el);
+    }
+
+    moveBullet() {
+        this.distance += this.speed;
+
+        this.el.style.transform = `translate(${this.distance}px, ${this.y}px)`;
     }
 }
