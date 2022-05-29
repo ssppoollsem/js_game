@@ -8,6 +8,19 @@ const key = {
     }
 }
 
+// 자주 사용되는 값들 전역 처리
+const gameProp = {
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight
+}
+
+// 키모션 딜레이 제거
+const renderGame = () => {
+    // 재귀호출
+    window.requestAnimationFrame(renderGame);
+    hero.keyMotion();
+}
+
 // 게임에 필요한 이벤트를 추가하고 관리
 const windowEvent = () => {
     window.addEventListener('keydown', e => {
@@ -15,12 +28,12 @@ const windowEvent = () => {
         // console.log(e.which) 
         
         key.keyDown[key.keyValue[e.which]] = true;
-        hero.keyMotion();
+        // hero.keyMotion();
     })
     
     window.addEventListener('keyup', e => {
         key.keyDown[key.keyValue[e.which]] = false;
-        hero.keyMotion();
+        // hero.keyMotion();
 
     })
 }
@@ -42,6 +55,8 @@ const init = () => {
     hero = new Hero('.hero');
     loadImg();
     windowEvent();
+    renderGame();
+    console.log(hero.position());
 }
 
 // 모든 요소가 로드 된 후 게임실행
