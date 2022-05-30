@@ -16,7 +16,7 @@ class Hero {
         if(key.keyDown['left']) {
             this.el.classList.add('run', 'flip');
             
-            this.movex -= this.speed;
+            this.movex = this.movex <= 0 ? 0 : this.movex - this.speed;
             this.direction = 'left';
         }else if(key.keyDown['right']) {
             this.el.classList.add('run');
@@ -86,7 +86,7 @@ class Bullet {
         // 수리검을 생성할 때의 방향 체크
         this.bulletDirection = hero.direction === 'left' ? this.bulletDirection = 'left' : this.bulletDirection = 'right';
         // 수리검 발사 위치
-        this.x = hero.movex + hero.size().width / 2;
+        this.x = this.bulletDirection === 'right' ? hero.movex + hero.size().width / 2 : hero.movex - hero.size().width / 2;
         this.y = hero.position().bottom - hero.size().height / 2;
         this.distance = this.x;
         
