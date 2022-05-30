@@ -5,7 +5,8 @@ class Hero {
     constructor(el) {
         this.el = document.querySelector(el);
         this.movex = 0; // 히어로 이동할 거리
-        this.speed = 16; // 히어로 이동 속도
+        this.speed = 8; // 히어로 이동 속도
+        this.direction = 'right'; // 히어로 방향
         //console.log(this.el.getBoundingClientRect()) // elenment에 크기 및 위치값
     }
 
@@ -16,11 +17,13 @@ class Hero {
             this.el.classList.add('run', 'flip');
             
             this.movex -= this.speed;
+            this.direction = 'left';
         }else if(key.keyDown['right']) {
             this.el.classList.add('run');
             this.el.classList.remove('flip');
             
             this.movex += this.speed;
+            this.direction = 'right';
         }
 
         // 공격키
@@ -29,8 +32,6 @@ class Hero {
 
             if (!bulletComProp.launch) {
                 bulletComProp.arr.push(new Bullet());
-                console.log(bulletComProp.arr.length)
-                
                 bulletComProp.launch = true;
             }
         }
@@ -77,12 +78,15 @@ class Bullet {
         this.y = 0;
         this.speed = 30; // 수리검의 속도
         this.distance = 0; // 수리검의 이동거리
+        this.bulletDirection = 'right'; // 수리검을 생성할 때의 방향 체크
         this.init();
     }
 
     init() {
+        // 수리검을 생성할 때의 방향 체크
+        this.bulletDirection = hero.direction === 'left' ? this.bulletDirection = 'left' : this.bulletDirection = 'right';
         // 수리검 발사 위치
-        this.x = hero.position().left + hero.size().width / 2;
+        this.x = hero.movex + hero.size().width / 2;
         this.y = hero.position().bottom - hero.size().height / 2;
         this.distance = this.x;
         
@@ -91,8 +95,35 @@ class Bullet {
     }
 
     moveBullet() {
-        this.distance += this.speed;
+        let setRotate = '';
 
-        this.el.style.transform = `translate(${this.distance}px, ${this.y}px)`;
+        if(this.bulletDirection === 'left') {
+            this.distance -= this.speed;
+            setRotate = 'rotate(180deg)';
+        } else {
+            this.distance += this.speed
+        }
+        
+
+        this.el.style.transform = `translate(${this.distance}px, ${this.y}px) ${setRotate}`;
+
+        this.crashBullet();
+    }
+
+    // 수리검 위치값
+    position() {
+        return {
+            left: this.el.getBoundingClientRect().left,
+            right: this.el.getBoundingClientRect().right,
+            top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
+            bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
+        }
+    }
+
+    // 수리검 충돌여부 체크
+    crashBullet() {
+        if(this.position().left > gameProp.screenWidth || this.position().right < 0 ) {
+            this.el.remove();
+        }
     }
 }

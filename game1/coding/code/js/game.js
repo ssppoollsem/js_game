@@ -14,6 +14,10 @@ const bulletComProp = {
     launch: false, // 수리검 모션중인지 체크
 }
 
+const gameBackground = {
+    gameBox: document.querySelector('.game')
+}
+
 // 자주 사용되는 값들 전역 처리
 const gameProp = {
     screenWidth: window.innerWidth,
@@ -22,12 +26,21 @@ const gameProp = {
 
 // 키모션 딜레이 제거
 const renderGame = () => {
-    // 재귀호출
     hero.keyMotion();
+    setGameBackground();
+    
     bulletComProp.arr.forEach((arr, i) => {
         arr.moveBullet();
     })
-    window.requestAnimationFrame(renderGame);
+    window.requestAnimationFrame(renderGame); // 재귀호출
+}
+
+// 배경이미지 패럴럭스
+const setGameBackground = () => {
+    // Math.min 수식에 값이 0보다 크면 0을 넣으주고 0보다 작으면 -값이 들어간다.
+    let parallaxValue = Math.min(0, -(hero.movex - gameProp.screenWidth / 3));
+
+    gameBackground.gameBox.style.transform = `translateX(${parallaxValue}px)`;
 }
 
 // 게임에 필요한 이벤트를 추가하고 관리
@@ -43,7 +56,12 @@ const windowEvent = () => {
     window.addEventListener('keyup', e => {
         key.keyDown[key.keyValue[e.which]] = false;
         // hero.keyMotion();
+    })
 
+    // 브라우저 리사이즈
+    window.addEventListener('resize', e => {
+        gameProp.screenWidth = window.innerWidth;
+        gameProp.screenHeight = window.innerHeight;
     })
 }
 
