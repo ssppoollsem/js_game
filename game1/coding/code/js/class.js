@@ -69,8 +69,9 @@ class Hero {
 }
 
 // 수리검 클래스
-class Bullet {
+class Bullet extends Hero {
     constructor() {
+        super()
         this.parentNode = document.querySelector('.game');
         this.el = document.createElement('div');
         this.el.className = 'hero_bullet';
@@ -104,25 +105,13 @@ class Bullet {
             this.distance += this.speed
         }
         
-
         this.el.style.transform = `translate(${this.distance}px, ${this.y}px) ${setRotate}`;
-
         this.crashBullet();
-    }
-
-    // 수리검 위치값
-    position() {
-        return {
-            left: this.el.getBoundingClientRect().left,
-            right: this.el.getBoundingClientRect().right,
-            top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
-            bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
-        }
     }
 
     // 수리검 충돌여부 체크
     crashBullet() {
-        if(this.position().left > gameProp.screenWidth || this.position().right < 0 ) {
+        if(super.position().left > gameProp.screenWidth || super.position().right < 0 ) {
             this.el.remove();
         }
     }
