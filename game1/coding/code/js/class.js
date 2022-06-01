@@ -111,8 +111,42 @@ class Bullet extends Hero {
 
     // 수리검 충돌여부 체크
     crashBullet() {
+        // 수리검이 몬스터 충돌여부
+        if(super.position().left > monster.position().left && super.position().right < monster.position().right) {
+            this.el.remove();
+            bulletComProp.arr.shift();
+        }
+
         if(super.position().left > gameProp.screenWidth || super.position().right < 0 ) {
             this.el.remove();
+            bulletComProp.arr.shift();
+        }
+    }
+}
+
+// 몬스터 클래스
+class Monster {
+    constructor() {
+        this.parentNode = document.querySelector('.game');
+        this.el = document.createElement('div');
+        this.el.className = 'monster_box';
+        this.elChildren = document.createElement('div');
+        this.elChildren.className = 'monster';
+        this.init();
+    }
+
+    init() {
+        // 몬스터 생성
+        this.el.appendChild(this.elChildren);
+        this.parentNode.appendChild(this.el);
+    }
+
+    position() {
+        return {
+            left: this.el.getBoundingClientRect().left,
+            right: this.el.getBoundingClientRect().right,
+            top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
+            bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
         }
     }
 }

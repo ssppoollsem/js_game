@@ -30,6 +30,7 @@ const renderGame = () => {
     setGameBackground();
     
     bulletComProp.arr.forEach((arr, i) => {
+        console.log('test')
         arr.moveBullet();
     })
     window.requestAnimationFrame(renderGame); // 재귀호출
@@ -76,10 +77,12 @@ const loadImg = () => {
 }
 
 let hero;
+let monster;
 
 // 프로그램 시작에 필요한 함수 또는 메소드
 const init = () => {
     hero = new Hero('.hero');
+    monster = new Monster();
     loadImg();
     windowEvent();
     renderGame();
