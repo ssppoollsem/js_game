@@ -82,7 +82,7 @@ let monster;
 // 프로그램 시작에 필요한 함수 또는 메소드
 const init = () => {
     hero = new Hero('.hero');
-    monster = new Monster();
+    monster = new Monster(500, 9000);
     loadImg();
     windowEvent();
     renderGame();

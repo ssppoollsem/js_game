@@ -7,6 +7,7 @@ class Hero {
         this.movex = 0; // 히어로 이동할 거리
         this.speed = 8; // 히어로 이동 속도
         this.direction = 'right'; // 히어로 방향
+        this.attackDamage = 1000; // 히어로 공격력
         //console.log(this.el.getBoundingClientRect()) // elenment에 크기 및 위치값
     }
 
@@ -115,6 +116,7 @@ class Bullet extends Hero {
         if(super.position().left > monster.position().left && super.position().right < monster.position().right) {
             this.el.remove();
             bulletComProp.arr.shift();
+            monster.updateHp(); // 몬스터 체력 업데이트
         }
 
         if(super.position().left > gameProp.screenWidth || super.position().right < 0 ) {
@@ -126,19 +128,28 @@ class Bullet extends Hero {
 
 // 몬스터 클래스
 class Monster {
-    constructor() {
+    constructor(positionX, hp) {
         this.parentNode = document.querySelector('.game');
         this.el = document.createElement('div');
         this.el.className = 'monster_box';
         this.elChildren = document.createElement('div');
         this.elChildren.className = 'monster';
+        this.hpNode = document.createElement('div');
+        this.hpNode.className = 'hp';
+        this.hpValue = hp;
+        this.hpTextNode = document.createTextNode(this.hpValue);
+        this.positionX = positionX;
+
         this.init();
     }
 
     init() {
+        this.hpNode.appendChild(this.hpTextNode);
+        this.el.appendChild(this.hpNode);
         // 몬스터 생성
         this.el.appendChild(this.elChildren);
         this.parentNode.appendChild(this.el);
+        this.el.style.left = `${this.positionX}px`;
     }
 
     position() {
@@ -148,5 +159,11 @@ class Monster {
             top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
             bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
         }
+    }
+
+    // 몬스터 체력
+    updateHp() {
+        this.hpValue = Math.max(0, this.hpValue - hero.attackDamage);
+        this.el.children[0].innerText = this.hpValue;
     }
 }
