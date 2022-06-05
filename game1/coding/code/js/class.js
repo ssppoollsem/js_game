@@ -112,11 +112,13 @@ class Bullet extends Hero {
 
     // 수리검 충돌여부 체크
     crashBullet() {
-        // 수리검이 몬스터 충돌여부
-        if(super.position().left > monster.position().left && super.position().right < monster.position().right) {
-            this.el.remove();
-            bulletComProp.arr.shift();
-            monster.updateHp(); // 몬스터 체력 업데이트
+        for(let j = 0; j < allMonsterComProp.arr.length; j++) {
+            // 수리검이 몬스터 충돌여부
+            if(super.position().left > allMonsterComProp.arr[j].position().left && super.position().right < allMonsterComProp.arr[j].position().right) {
+                this.el.remove();
+                bulletComProp.arr.shift();
+                allMonsterComProp.arr[j].updateHp(j); // 몬스터 체력 업데이트
+            }
         }
 
         if(super.position().left > gameProp.screenWidth || super.position().right < 0 ) {
@@ -137,14 +139,16 @@ class Monster {
         this.hpNode = document.createElement('div');
         this.hpNode.className = 'hp';
         this.hpValue = hp;
-        this.hpTextNode = document.createTextNode(this.hpValue);
+        this.defaultHpValue = hp; // 최초 몬스터의 체력
+        this.hpInner = document.createElement('span');
+        this.progress = 0;
         this.positionX = positionX;
 
         this.init();
     }
 
     init() {
-        this.hpNode.appendChild(this.hpTextNode);
+        this.hpNode.appendChild(this.hpInner);
         this.el.appendChild(this.hpNode);
         // 몬스터 생성
         this.el.appendChild(this.elChildren);
@@ -162,8 +166,21 @@ class Monster {
     }
 
     // 몬스터 체력
-    updateHp() {
+    updateHp(index) { // index : 해당하는 몬스터 
         this.hpValue = Math.max(0, this.hpValue - hero.attackDamage);
-        this.el.children[0].innerText = this.hpValue;
+        this.progress = this.hpValue / this.defaultHpValue * 100;
+        this.el.children[0].children[0].style.width = `${this.progress}%`; // 몬스터 체력바
+
+        if(this.hpValue === 0) {
+            this.dead(index)
+        }
+    }
+
+    // 몬스터 체력 0 일 경우
+    dead(index) {
+        this.el.classList.add('remove');
+        setTimeout(() => { this.el.remove() }, 200);
+        allMonsterComProp.arr.splice(index, 1);
+
     }
 }

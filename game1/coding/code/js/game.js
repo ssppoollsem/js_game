@@ -8,6 +8,11 @@ const key = {
     }
 }
 
+// 전체 몬스터 배열 관리
+const allMonsterComProp = {
+    arr: []
+}
+
 // 생성된 수리검 관리할 배열 생성
 const bulletComProp = {
     arr: [],
@@ -30,7 +35,6 @@ const renderGame = () => {
     setGameBackground();
     
     bulletComProp.arr.forEach((arr, i) => {
-        console.log('test')
         arr.moveBullet();
     })
     window.requestAnimationFrame(renderGame); // 재귀호출
@@ -77,16 +81,15 @@ const loadImg = () => {
 }
 
 let hero;
-let monster;
 
 // 프로그램 시작에 필요한 함수 또는 메소드
 const init = () => {
     hero = new Hero('.hero');
-    monster = new Monster(500, 9000);
+    allMonsterComProp.arr[0] = new Monster(700, 7777);
+    allMonsterComProp.arr[1] = new Monster(1500, 5555);
     loadImg();
     windowEvent();
     renderGame();
-    console.log(hero.position());
 }
 
 // 모든 요소가 로드 된 후 게임실행
