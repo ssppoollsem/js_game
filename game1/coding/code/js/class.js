@@ -4,7 +4,7 @@ class Hero {
     // 생성자
     constructor(el) {
         this.el = document.querySelector(el);
-        this.movex = 0; // 히어로 이동할 거리
+        this.moveX = 0; // 히어로 이동할 거리
         this.speed = 8; // 히어로 이동 속도
         this.direction = 'right'; // 히어로 방향
         this.attackDamage = 1000; // 히어로 공격력
@@ -17,13 +17,13 @@ class Hero {
         if(key.keyDown['left']) {
             this.el.classList.add('run', 'flip');
             
-            this.movex = this.movex <= 0 ? 0 : this.movex - this.speed;
+            this.moveX = this.moveX <= 0 ? 0 : this.moveX - this.speed;
             this.direction = 'left';
         }else if(key.keyDown['right']) {
             this.el.classList.add('run');
             this.el.classList.remove('flip');
             
-            this.movex += this.speed;
+            this.moveX += this.speed;
             this.direction = 'right';
         }
 
@@ -47,7 +47,7 @@ class Hero {
             bulletComProp.launch = false;
         }
 
-        this.el.parentNode.style.transform = `translateX(${this.movex}px)`
+        this.el.parentNode.style.transform = `translateX(${this.moveX}px)`
     }
 
     // 히어로 위치값
@@ -88,7 +88,7 @@ class Bullet extends Hero {
         // 수리검을 생성할 때의 방향 체크
         this.bulletDirection = hero.direction === 'left' ? this.bulletDirection = 'left' : this.bulletDirection = 'right';
         // 수리검 발사 위치
-        this.x = this.bulletDirection === 'right' ? hero.movex + hero.size().width / 2 : hero.movex - hero.size().width / 2;
+        this.x = this.bulletDirection === 'right' ? hero.moveX + hero.size().width / 2 : hero.moveX - hero.size().width / 2;
         this.y = hero.position().bottom - hero.size().height / 2;
         this.distance = this.x;
         
@@ -143,6 +143,8 @@ class Monster {
         this.hpInner = document.createElement('span');
         this.progress = 0;
         this.positionX = positionX;
+        this.moveX = 0; // 몬스터의 이동거리
+        this.speed = 5; // 몬스터의 이동속도
 
         this.init();
     }
@@ -181,6 +183,15 @@ class Monster {
         this.el.classList.add('remove');
         setTimeout(() => { this.el.remove() }, 200);
         allMonsterComProp.arr.splice(index, 1);
+    }
 
+    // 몬스터 이동
+    moveMonster() {
+        if (this.moveX + this.positionX + this.el.offsetWidth - hero.moveX + hero.position().left <= 0) {
+            this.moveX = hero.moveX - this.positionX + gameProp.screenWidth - hero.position().left
+        } else {
+            this.moveX -= this.speed;
+        }
+        this.el.style.transform = `translateX(${this.moveX}px)`;
     }
 }

@@ -12,6 +12,12 @@
 .monster_box .hp {position: absolute; left: 0; top: 0; width: 100%; height: 10px; border: 2px solid #000; transform: translateY(-100%)}
 .monster_box .hp > span {display: block; width:100%; height: 100%; background: orangered; transition: width .3s;}
 .monster_box.remove {opacity: 0; transition: opacity .2s;}
+.game_info {position: fixed; left: 0; top: 0; z-index: 20; width: 100%; height: 150px}
+.game_info .hero_state {width: 300px; height: 100%; padding: 10px}
+.game_info .hero_state .hero_img {float: left; width: 20%}
+.game_info .hero_state .state_box {float: left; width: 80%; height: 100%; padding-top: 10px}
+.game_info .hero_state .state_box .hp {width: 100%; height: 10px; border: 1px solid #000}
+.game_info .hero_state .state_box .hp > span {display: block; width: 100%; height: 100%; background-color: red; transition: width .3s;}
 
 /* 게임 캐릭터 대기 모션 */
 @keyframes hero_idle {
