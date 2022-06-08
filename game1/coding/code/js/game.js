@@ -26,7 +26,8 @@ const gameBackground = {
 // 자주 사용되는 값들 전역 처리
 const gameProp = {
     screenWidth: window.innerWidth,
-    screenHeight: window.innerHeight
+    screenHeight: window.innerHeight,
+    gameOver: false
 }
 
 // 키모션 딜레이 제거
@@ -43,6 +44,15 @@ const renderGame = () => {
     window.requestAnimationFrame(renderGame); // 재귀호출
 }
 
+// 게임 종료
+const endGame = () => {
+    gameProp.gameOver = true;
+    key.keyDown.left = false; // endGame 함수 실행시 강제로 키 막기
+    key.keyDown.right = false; // endGame 함수 실행시 강제로 키 막기
+
+    document.querySelector('.game_over').classList.add('active');
+}
+
 // 배경이미지 패럴럭스
 const setGameBackground = () => {
     // Math.min 수식에 값이 0보다 크면 0을 넣으주고 0보다 작으면 -값이 들어간다.
@@ -57,7 +67,7 @@ const windowEvent = () => {
         // 키코드 확인
         // console.log(e.which) 
         
-        key.keyDown[key.keyValue[e.which]] = true;
+        if(gameProp.gameOver === false) key.keyDown[key.keyValue[e.which]] = true;
         // hero.keyMotion();
     })
     

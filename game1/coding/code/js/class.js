@@ -8,7 +8,9 @@ class Hero {
         this.speed = 8; // 히어로 이동 속도
         this.direction = 'right'; // 히어로 방향
         this.attackDamage = 1000; // 히어로 공격력
-        //console.log(this.el.getBoundingClientRect()) // elenment에 크기 및 위치값
+        this.hpProgress = 0; // 히어로 체력바
+        this.hpValue = 50000; // 히어로 체력
+        this.defaultHpValue = this.hpValue;
     }
 
     // 히어로의 움직임 변경
@@ -58,6 +60,35 @@ class Hero {
             top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
             bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
         }
+    }
+
+    // 히어로 체력
+    updateHp(monsterDamage) {
+        this.hpValue = Math.max(0, this.hpValue - monsterDamage);
+        this.hpProgress = this.hpValue / this.defaultHpValue * 100;
+
+        const heroHpBox = document.querySelector('.state_box .hp > span');
+        heroHpBox.style.width = this.hpProgress + '%';
+        this.crash();
+
+        if(this.hpProgress === 0) {
+            this.dead();
+        }
+    }
+
+    crash() {
+        this.el.classList.add('crash');
+
+        // 충돌 모션
+        setTimeout(() => {
+           this.el.classList.remove('crash') 
+        }, 400);
+    }
+
+    // 히어로 죽었을 때
+    dead() {
+        this.el.classList.add('dead');
+        endGame();
     }
 
     // 히어로 사이즈
@@ -145,6 +176,7 @@ class Monster {
         this.positionX = positionX;
         this.moveX = 0; // 몬스터의 이동거리
         this.speed = 5; // 몬스터의 이동속도
+        this.crashDamage = 100; // 몬스터 충돌 데미지
 
         this.init();
     }
@@ -193,5 +225,15 @@ class Monster {
             this.moveX -= this.speed;
         }
         this.el.style.transform = `translateX(${this.moveX}px)`;
+        this.crash();
+    }
+
+    // 몬스터 히어로 충돌 여부체크
+    crash() {
+        let rightDiff = 30; // 히어로 우측 여백
+        let leftDiff = 70; // 히어로 왼쪽 여백
+        if(hero.position().right - rightDiff > this.position().left && hero.position().left + leftDiff < this.position().right) {
+            hero.updateHp(this.crashDamage);
+        }
     }
 }
