@@ -9,7 +9,7 @@ class Hero {
         this.direction = 'right'; // 히어로 방향
         this.attackDamage = 1000; // 히어로 공격력
         this.hpProgress = 0; // 히어로 체력바
-        this.hpValue = 50000; // 히어로 체력
+        this.hpValue = 10000; // 히어로 체력
         this.defaultHpValue = this.hpValue;
     }
 

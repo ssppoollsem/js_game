@@ -50,7 +50,13 @@ const endGame = () => {
     key.keyDown.left = false; // endGame 함수 실행시 강제로 키 막기
     key.keyDown.right = false; // endGame 함수 실행시 강제로 키 막기
 
-    document.querySelector('.game_over').classList.add('active');
+    const gameOver = document.createElement('div');
+    
+    gameOver.classList.add('game_over');
+    gameOver.innerHTML += "<p>게임오버</p>";
+    if(!document.querySelector('.game_over')) {
+        document.querySelector('.game_app').appendChild(gameOver);
+    }
 }
 
 // 배경이미지 패럴럭스

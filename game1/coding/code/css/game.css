@@ -20,8 +20,7 @@
 .game_info .hero_state .state_box {float: left; width: 80%; height: 100%; padding-top: 10px}
 .game_info .hero_state .state_box .hp {width: 100%; height: 10px; border: 1px solid #000}
 .game_info .hero_state .state_box .hp > span {display: block; width: 100%; height: 100%; background-color: red; transition: width .3s;}
-.game_over {display: none; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background-color: rgba(0,0,0,0.5); z-index: 200}
-.game_over.active {display: block}
+.game_over {position: fixed; top: 0; left: 0; bottom: 0; right: 0; background-color: rgba(0,0,0,0.5); z-index: 200}
 .game_over p {display: flex; height:100%; align-items: center; justify-content: center; color: #fff; font-size: 150px}
 
 /* 게임 캐릭터 대기 모션 */
