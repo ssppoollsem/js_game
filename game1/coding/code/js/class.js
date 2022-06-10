@@ -149,6 +149,7 @@ class Bullet extends Hero {
                 this.el.remove();
                 bulletComProp.arr.shift();
                 allMonsterComProp.arr[j].updateHp(j); // 몬스터 체력 업데이트
+                this.damageView();
             }
         }
 
@@ -156,6 +157,16 @@ class Bullet extends Hero {
             this.el.remove();
             bulletComProp.arr.shift();
         }
+    }
+
+    // 데미지 
+    damageView() {
+        this.parentNode = document.querySelector('.game_app');
+        this.textDamageNode = document.createElement('div');
+        this.textDamageNode.className = 'text_damage';
+        this.textDamage = document.createTextNode(hero.attackDamage);
+        this.textDamageNode.appendChild(this.textDamage);
+        this.parentNode.appendChild(this.textDamageNode);
     }
 }
 
