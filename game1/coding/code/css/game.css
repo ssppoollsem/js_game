@@ -22,7 +22,7 @@
 .game_info .hero_state .state_box .hp > span {display: block; width: 100%; height: 100%; background-color: red; transition: width .3s;}
 .game_over {position: fixed; top: 0; left: 0; bottom: 0; right: 0; background-color: rgba(0,0,0,0.5); z-index: 200}
 .game_over p {display: flex; height:100%; align-items: center; justify-content: center; color: #fff; font-size: 150px}
-.text_damage {position:absolute; left:0; bottom:0; z-index:200}
+.text_damage {position:absolute; left:0; bottom:0; z-index:200; font-family: 'roboto'; font-size: 110px; background: linear-gradient(to bottom, rgba(196,41,30,1) 0%,rgba(230,89,191,1) 100%); -webkit-text-stroke: 5px rgba(255,255,255,.7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textDamage .5s ease-out; animation-fill-mode: forwards}
 
 /* 게임 캐릭터 대기 모션 */
 @keyframes hero_idle {
@@ -51,5 +51,11 @@
     100% {background-position-x: -2242px}
 }
 
+/* 데미지 모션 */
+@keyframes textDamage {
+    0% {opacity: 0; bottom: 0}
+    70% {opacity: 1; bottom: 50px}
+    100% {opacity: 0; bottom: 90px}
+}
 
 /* will-change : css로 변화될 엘리먼트의 속성값을 브라우저에서 미리 인지하고 준비해 조금 더 부드러운 효과  */

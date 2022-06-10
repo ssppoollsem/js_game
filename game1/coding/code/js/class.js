@@ -11,6 +11,7 @@ class Hero {
         this.hpProgress = 0; // 히어로 체력바
         this.hpValue = 10000; // 히어로 체력
         this.defaultHpValue = this.hpValue;
+        this.realDamage = 0;
     }
 
     // 히어로의 움직임 변경
@@ -89,7 +90,7 @@ class Hero {
     dead() {
         this.el.classList.add('dead');
         endGame();
-    }
+    }ㅌㅌ
 
     // 히어로 사이즈
     size() {
@@ -97,6 +98,11 @@ class Hero {
             width: this.el.offsetWidth,
             height: this.el.offsetHeight
         }
+    }
+
+    // 히어로 데미지
+    hitDamage() {
+        this.realDamage = this.attackDamage - Math.floor(this.attackDamage * Math.random() * 0.1);
     }
 }
 
@@ -146,10 +152,11 @@ class Bullet extends Hero {
         for(let j = 0; j < allMonsterComProp.arr.length; j++) {
             // 수리검이 몬스터 충돌여부
             if(super.position().left > allMonsterComProp.arr[j].position().left && super.position().right < allMonsterComProp.arr[j].position().right) {
+                hero.hitDamage();
                 this.el.remove();
                 bulletComProp.arr.shift();
+                this.damageView(allMonsterComProp.arr[j]);
                 allMonsterComProp.arr[j].updateHp(j); // 몬스터 체력 업데이트
-                this.damageView();
             }
         }
 
@@ -160,13 +167,21 @@ class Bullet extends Hero {
     }
 
     // 데미지 
-    damageView() {
+    damageView(monster) {
         this.parentNode = document.querySelector('.game_app');
         this.textDamageNode = document.createElement('div');
         this.textDamageNode.className = 'text_damage';
-        this.textDamage = document.createTextNode(hero.attackDamage);
+        this.textDamage = document.createTextNode(hero.realDamage);
         this.textDamageNode.appendChild(this.textDamage);
         this.parentNode.appendChild(this.textDamageNode);
+        
+        let textPosition = Math.random() * -100; // 텍스트 데미지 왼쪽으로 약간 이동
+        let damagex = monster.position().left + textPosition; // 몬스터 x좌표 위치
+        let damagey = monster.position().top; // 몬스터 y좌표 위치
+
+        this.textDamageNode.style.transform = `translate(${damagex}px, ${-damagey}px)` // 텍스트 데미지 위치
+
+        setTimeout(() => {this.textDamageNode.remove()}, 500) // 텍스트 데미지 엘리먼트 제거
     }
 }
 
@@ -212,7 +227,7 @@ class Monster {
 
     // 몬스터 체력
     updateHp(index) { // index : 해당하는 몬스터 
-        this.hpValue = Math.max(0, this.hpValue - hero.attackDamage);
+        this.hpValue = Math.max(0, this.hpValue - hero.realDamage);
         this.progress = this.hpValue / this.defaultHpValue * 100;
         this.el.children[0].children[0].style.width = `${this.progress}%`; // 몬스터 체력바
 
