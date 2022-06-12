@@ -30,6 +30,11 @@ const gameProp = {
     gameOver: false
 }
 
+// 게임 스테이지 관리
+const stageInfo = {
+    stage: []
+}
+
 // 키모션 딜레이 제거
 const renderGame = () => {
     hero.keyMotion();
@@ -104,8 +109,8 @@ let hero;
 // 프로그램 시작에 필요한 함수 또는 메소드
 const init = () => {
     hero = new Hero('.hero');
-    allMonsterComProp.arr[0] = new Monster(700, 7777);
-    // allMonsterComProp.arr[1] = new Monster(1500, 5555);
+    stageInfo.stage = new Stage();
+
     loadImg();
     windowEvent();
     renderGame();

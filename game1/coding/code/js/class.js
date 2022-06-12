@@ -1,5 +1,37 @@
 // 게임에 필요한 클래스 작성
 
+class Stage {
+    constructor() {
+        this.stageStart();
+    }
+
+    stageStart() {
+        this.stageGuide();
+        this.callMonster();
+    }
+
+    stageGuide() {
+        this.parentNode = document.querySelector('.game_app');
+        this.textBox = document.createElement('div');
+        this.textBox.className = 'stage_box';
+        this.textNode = document.createTextNode('START LEVEL1');
+        this.textBox.appendChild(this.textNode);
+        this.parentNode.appendChild(this.textBox);
+
+        setTimeout(() => {this.textBox.remove() }, 1500)
+    }
+
+    // 몬스터 등장
+    callMonster() {
+        for(let i=0; i<=10; i++) {
+            if(i === 10) {
+                allMonsterComProp.arr[i] = new Monster(greenMonBoss, gameProp.screenWidth + 700 * i);
+            }else {
+                allMonsterComProp.arr[i] = new Monster(greenMon, gameProp.screenWidth + 700 * i);
+            }
+        }
+    }
+}
 class Hero {
     // 생성자
     constructor(el) {
@@ -187,22 +219,23 @@ class Bullet extends Hero {
 
 // 몬스터 클래스
 class Monster {
-    constructor(positionX, hp) {
+    constructor(property, positionX) {
+        console.log(property)
         this.parentNode = document.querySelector('.game');
         this.el = document.createElement('div');
-        this.el.className = 'monster_box';
+        this.el.className = `monster_box ${property.name}`;
         this.elChildren = document.createElement('div');
         this.elChildren.className = 'monster';
         this.hpNode = document.createElement('div');
         this.hpNode.className = 'hp';
-        this.hpValue = hp;
-        this.defaultHpValue = hp; // 최초 몬스터의 체력
+        this.hpValue = property.hpValue;
+        this.defaultHpValue = property.hpValue; // 최초 몬스터의 체력
         this.hpInner = document.createElement('span');
         this.progress = 0;
         this.positionX = positionX;
         this.moveX = 0; // 몬스터의 이동거리
-        this.speed = 5; // 몬스터의 이동속도
-        this.crashDamage = 100; // 몬스터 충돌 데미지
+        this.speed = property.speed; // 몬스터의 이동속도
+        this.crashDamage = property.crashDamage; // 몬스터 충돌 데미지
 
         this.init();
     }
