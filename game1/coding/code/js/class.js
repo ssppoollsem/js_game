@@ -122,7 +122,7 @@ class Hero {
     dead() {
         this.el.classList.add('dead');
         endGame();
-    }ㅌㅌ
+    }
 
     // 히어로 사이즈
     size() {
