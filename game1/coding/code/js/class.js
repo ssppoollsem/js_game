@@ -2,19 +2,23 @@
 
 class Stage {
     constructor() {
+        this.level = 0;
+        this.isStart = false;
         this.stageStart();
     }
 
+    // 스테이지 시작
     stageStart() {
-        this.stageGuide();
+        this.isStart = true;
+        this.stageGuide(`START LEVEL${this.level + 1}`);
         this.callMonster();
     }
 
-    stageGuide() {
+    stageGuide(text) {
         this.parentNode = document.querySelector('.game_app');
         this.textBox = document.createElement('div');
         this.textBox.className = 'stage_box';
-        this.textNode = document.createTextNode('START LEVEL1');
+        this.textNode = document.createTextNode(text);
         this.textBox.appendChild(this.textNode);
         this.parentNode.appendChild(this.textBox);
 
@@ -25,9 +29,24 @@ class Stage {
     callMonster() {
         for(let i=0; i<=10; i++) {
             if(i === 10) {
-                allMonsterComProp.arr[i] = new Monster(greenMonBoss, gameProp.screenWidth + 700 * i);
+                allMonsterComProp.arr[i] = new Monster(stageInfo.monster[this.level].bossMon, hero.moveX + gameProp.screenWidth + 700 * i);
             }else {
-                allMonsterComProp.arr[i] = new Monster(greenMon, gameProp.screenWidth + 700 * i);
+                allMonsterComProp.arr[i] = new Monster(stageInfo.monster[this.level].defaultMon, hero.moveX + gameProp.screenWidth + 700 * i);
+            }
+        }
+    }
+    
+    // 모든 몬스터 사냥했는지 체크
+    clearCheck() {
+        if(allMonsterComProp.arr.length === 0 && this.isStart) {
+            this.isStart = false;
+            this.level++;
+            if(stageInfo.monster.length > this.level) {
+                this.stageGuide('CLEAR!!');
+                setTimeout(() => { this.stageStart() }, 2000);
+                hero.heroUpgrade();
+            } else {
+                this.stageGuide('ALL CLEAR!!');
             }
         }
     }
@@ -39,9 +58,9 @@ class Hero {
         this.moveX = 0; // 히어로 이동할 거리
         this.speed = 8; // 히어로 이동 속도
         this.direction = 'right'; // 히어로 방향
-        this.attackDamage = 1000; // 히어로 공격력
+        this.attackDamage = 10000; // 히어로 공격력
         this.hpProgress = 0; // 히어로 체력바
-        this.hpValue = 10000; // 히어로 체력
+        this.hpValue = 100000; // 히어로 체력
         this.defaultHpValue = this.hpValue;
         this.realDamage = 0;
     }
@@ -136,6 +155,12 @@ class Hero {
     hitDamage() {
         this.realDamage = this.attackDamage - Math.floor(this.attackDamage * Math.random() * 0.1);
     }
+
+    // 히어로 레벨업
+    heroUpgrade() {
+        this.speed += 1.3;
+        this.attackDamage += 15000;
+    }
 }
 
 // 수리검 클래스
@@ -220,7 +245,7 @@ class Bullet extends Hero {
 // 몬스터 클래스
 class Monster {
     constructor(property, positionX) {
-        console.log(property)
+        // console.log(property)
         this.parentNode = document.querySelector('.game');
         this.el = document.createElement('div');
         this.el.className = `monster_box ${property.name}`;
@@ -236,6 +261,7 @@ class Monster {
         this.moveX = 0; // 몬스터의 이동거리
         this.speed = property.speed; // 몬스터의 이동속도
         this.crashDamage = property.crashDamage; // 몬스터 충돌 데미지
+        this.score = property.score;
 
         this.init();
     }
@@ -274,6 +300,7 @@ class Monster {
         this.el.classList.add('remove');
         setTimeout(() => { this.el.remove() }, 200);
         allMonsterComProp.arr.splice(index, 1);
+        this.setScore();
     }
 
     // 몬스터 이동
@@ -294,5 +321,11 @@ class Monster {
         if(hero.position().right - rightDiff > this.position().left && hero.position().left + leftDiff < this.position().right) {
             hero.updateHp(this.crashDamage);
         }
+    }
+
+    // 점수체크
+    setScore() {
+        stageInfo.totalScore += this.score;
+        document.querySelector('.score_box').innerText = stageInfo.totalScore;
     }
 }

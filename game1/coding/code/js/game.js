@@ -32,7 +32,13 @@ const gameProp = {
 
 // 게임 스테이지 관리
 const stageInfo = {
-    stage: []
+    stage: [],
+    monster: [
+        {defaultMon: greenMon, bossMon: greenMonBoss},
+        {defaultMon: yellowMon, bossMon: yellowMonBoss},
+        {defaultMon: pinkMon, bossMon: pinkMonBoss},
+    ],
+    totalScore: 0
 }
 
 // 키모션 딜레이 제거
@@ -46,6 +52,7 @@ const renderGame = () => {
     allMonsterComProp.arr.forEach((arr, i) => {
         arr.moveMonster();
     })
+    stageInfo.stage.clearCheck();
     window.requestAnimationFrame(renderGame); // 재귀호출
 }
 
