@@ -86,12 +86,10 @@ const windowEvent = () => {
         // console.log(e.which) 
         
         if(gameProp.gameOver === false) key.keyDown[key.keyValue[e.which]] = true;
-        // hero.keyMotion();
     })
     
     window.addEventListener('keyup', e => {
         key.keyDown[key.keyValue[e.which]] = false;
-        // hero.keyMotion();
     })
 
     // 브라우저 리사이즈
