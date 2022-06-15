@@ -63,6 +63,10 @@ class Hero {
         this.hpValue = 100000; // 히어로 체력
         this.defaultHpValue = this.hpValue;
         this.realDamage = 0;
+        this.slideSpeed = 14; // 슬라이드 스피드
+        this.slideTime = 0; // 슬라이드 진행시간
+        this.slideMaxTime = 30; // 슬라이드 제한시간
+        this.slideDown = false;
     }
 
     // 히어로의 움직임 변경
@@ -90,6 +94,25 @@ class Hero {
                 bulletComProp.launch = true;
             }
         }
+
+        // 슬라이드
+        if(key.keyDown['slide']) {
+            if(!this.slideDown) {
+                this.el.classList.add('slide');
+
+                if(this.direction === 'right') {
+                    this.moveX += this.slideSpeed;
+                }else {
+                    this.moveX -= this.slideSpeed;
+                }
+
+                if(this.slideTime > this.slideMaxTime) {
+                    this.el.classList.remove('slide');
+                    this.slideDown = true;
+                }
+                this.slideTime++;
+            }
+        }
         
         if(!key.keyDown['left'] && !key.keyDown['right']) {
             this.el.classList.remove('run');
@@ -99,6 +122,12 @@ class Hero {
             this.el.classList.remove('attack');
 
             bulletComProp.launch = false;
+        }
+
+        if(!key.keyDown['slide']) {
+            this.el.classList.remove('slide');
+            this.slideTime = 0;
+            this.slideDown = false;
         }
 
         this.el.parentNode.style.transform = `translateX(${this.moveX}px)`

@@ -8,6 +8,7 @@
 .hero_box .hero.attack {background-image: url('/game1/lib/images/ninja_attack.png'); background-size: 1498px 182px; animation: hero_attack .7s steps(10);}
 .hero_box .hero.crash {background-image: url('/game1/lib/images/ninja_crash.png'); background-size: 299px 182px; animation: hero_crash .4s 1 steps(2);}
 .hero_box .hero.dead {background-image: url('/game1/lib/images/ninja_dead.png'); background-size: 150px 182px; transform: rotate(90deg); animation: none}
+.hero_box .hero.slide {background-image: url('/game1/lib/images/ninja_slide.png'); background-size: 1498px 182px; animation: hero_slide .7s 1 steps(10);}
 .hero_bullet {position: absolute; left: 0; bottom: 0; z-index: 90; width: 120px; height: 24px; background: url('/game1/lib/images/hero_bullet.png') no-repeat; background-size: cover; will-change: transform;}
 .monster_box {position:absolute; left: 700px; bottom: 0; z-index: 90; width: 280px; height: 294px; will-change: transform}
 .monster_box .monster {height: 100%; background: url('/game1/lib/images/monster/monster_green_run.png'); background-size: 2242px 294px; animation: monster_run 1s infinite steps(8)}
@@ -52,7 +53,12 @@
 /* 히어로 충돌 모션 */
 @keyframes hero_crash {
     0% {background-position-x: 0}
-    100% {background-position: 299px}
+    100% {background-position: -299px}
+}
+/* 히어로 슬라이드 모션 */
+@keyframes hero_slide {
+    0% {background-position-x: 0}
+    100% {background-position: -1498px}
 }
 
 /* 몬스터 달리는 모션 */
