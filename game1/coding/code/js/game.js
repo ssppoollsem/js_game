@@ -5,7 +5,7 @@ const key = {
         37: 'left',
         39: 'right',
         88: 'attack',
-        67: 'slide'
+        32: 'slide'
     }
 }
 
