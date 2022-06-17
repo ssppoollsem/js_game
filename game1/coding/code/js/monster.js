@@ -5,6 +5,7 @@ const pinkMon = {
     speed: 8,
     crashDamage: 300,
     score: 3000,
+    exp: 3000
 }
 
 // 엘로우 몬스터
@@ -14,6 +15,7 @@ const yellowMon = {
     speed: 10,
     crashDamage: 250,
     score: 2000,
+    exp: 2000
 }
 
 // 그린 몬스터
@@ -23,6 +25,7 @@ const greenMon = {
     speed: 10,
     crashDamage: 200,
     score: 1000,
+    exp: 1000
 }
 
 // 그린 보스 몬스터
@@ -32,6 +35,7 @@ const greenMonBoss = {
     speed: 4,
     crashDamage: 1000,
     score: 10000,
+    exp: 10000
 }
 // 엘로우 보스 몬스터
 const yellowMonBoss = {
@@ -40,6 +44,7 @@ const yellowMonBoss = {
     speed: 4,
     crashDamage: 1000,
     score: 20000,
+    exp: 20000
 }
 // 핑크 보스 몬스터
 const pinkMonBoss = {
@@ -48,4 +53,5 @@ const pinkMonBoss = {
     speed: 3,
     crashDamage: 1000,
     score: 30000,
+    exp: 30000
 }

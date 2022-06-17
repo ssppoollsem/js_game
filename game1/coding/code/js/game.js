@@ -34,12 +34,13 @@ const gameProp = {
 // 게임 스테이지 관리
 const stageInfo = {
     stage: [],
+    totalScore: 0,
     monster: [
         {defaultMon: greenMon, bossMon: greenMonBoss},
         {defaultMon: yellowMon, bossMon: yellowMonBoss},
         {defaultMon: pinkMon, bossMon: pinkMonBoss},
     ],
-    totalScore: 0
+    callPosition: [1000, 7000, 14000] // 몬스터 소환 포지션
 }
 
 // 키모션 딜레이 제거

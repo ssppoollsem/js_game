@@ -4,15 +4,15 @@ class Stage {
     constructor() {
         this.level = 0;
         this.isStart = false;
-        this.stageStart();
+        // this.stageStart();
     }
 
     // 스테이지 시작
-    stageStart() {
-        this.isStart = true;
-        this.stageGuide(`START LEVEL${this.level + 1}`);
-        this.callMonster();
-    }
+    // stageStart() {
+    //     this.isStart = true;
+    //     this.stageGuide(`START LEVEL${this.level + 1}`);
+    //     this.callMonster();
+    // }
 
     stageGuide(text) {
         this.parentNode = document.querySelector('.game_app');
@@ -38,17 +38,30 @@ class Stage {
     
     // 모든 몬스터 사냥했는지 체크
     clearCheck() {
-        if(allMonsterComProp.arr.length === 0 && this.isStart) {
-            this.isStart = false;
-            this.level++;
-            if(stageInfo.monster.length > this.level) {
-                this.stageGuide('CLEAR!!');
-                setTimeout(() => { this.stageStart() }, 2000);
-                hero.heroUpgrade();
-            } else {
-                this.stageGuide('ALL CLEAR!!');
+        stageInfo.callPosition.forEach( arr => {
+            if(hero.moveX >= arr && allMonsterComProp.arr.length === 0) {
+                this.stageGuide('곧 몬스터가 몰려옵니다!');
+                stageInfo.callPosition.shift();
+                setTimeout(() => {
+                    this.callMonster();
+                    this.level ++;
+                }, 1000)
+                console.log(arr)
+                // this.isStart = false;
             }
-        }
+        })
+
+        // if(allMonsterComProp.arr.length === 0 && this.isStart) {
+        //     this.isStart = false;
+        //     this.level++;
+        //     if(stageInfo.monster.length > this.level) {
+        //         this.stageGuide('CLEAR!!');
+        //         setTimeout(() => { this.stageStart() }, 2000);
+        //         hero.heroUpgrade();
+        //     } else {
+        //         this.stageGuide('ALL CLEAR!!');
+        //     }
+        // }
     }
 }
 class Hero {
@@ -67,6 +80,11 @@ class Hero {
         this.slideTime = 0; // 슬라이드 진행시간
         this.slideMaxTime = 30; // 슬라이드 제한시간
         this.slideDown = false;
+        this.level = 1;
+        this.exp = 0;
+        this.maxExp = 3000;
+        this.expProgress = 0;
+
     }
 
     // 히어로의 움직임 변경
@@ -143,18 +161,28 @@ class Hero {
         }
     }
 
-    // 히어로 체력
-    updateHp(monsterDamage) {
+    // 히어로 체력 피해
+    minusHp(monsterDamage) {
         this.hpValue = Math.max(0, this.hpValue - monsterDamage);
-        this.hpProgress = this.hpValue / this.defaultHpValue * 100;
-
-        const heroHpBox = document.querySelector('.state_box .hp > span');
-        heroHpBox.style.width = this.hpProgress + '%';
         this.crash();
 
-        if(this.hpProgress === 0) {
+        if(this.hpValue === 0) {
             this.dead();
         }
+        this.renderHp();
+    }
+
+    // 히어로 체력 회복
+    plusHp(hp) {
+        this.hpValue = hp;
+        this.renderHp();
+    }
+
+    // 체력 게이지 체크
+    renderHp() {
+        this.hpProgress = this.hpValue / this.defaultHpValue * 100;
+        const heroHpBox = document.querySelector('.state_box .hp > span');
+        heroHpBox.style.width = this.hpProgress + '%';
     }
 
     crash() {
@@ -187,8 +215,33 @@ class Hero {
 
     // 히어로 레벨업
     heroUpgrade() {
-        this.speed += 1.3;
-        this.attackDamage += 15000;
+        this.attackDamage += 5000;
+        this.defaultHpValue += 20000;
+    }
+
+    // 히어로 경험치
+    updateExp(exp) {
+        this.exp += exp;
+        this.expProgress = this.exp / this.maxExp * 100;
+        document.querySelector('.state_box .exp > span').style.width = `${this.expProgress}%`;
+    
+        if(this.exp >= this.maxExp) {
+            this.levelUp();
+        }
+    }
+
+    // 히어로 레벨업
+    levelUp() {
+        this.level ++;
+        this.exp = 0;
+        this.maxExp += this.level * 1000;
+        document.querySelector('.level_box > strong').innerText = this.level;
+        const levelGuide = document.querySelector('.hero_box .level_up');
+        levelGuide.classList.add('active');
+        setTimeout(() => { levelGuide.classList.remove('active') }, 1000);
+        this.updateExp(this.exp);
+        this.heroUpgrade();
+        this.plusHp(this.defaultHpValue);
     }
 }
 
@@ -291,6 +344,7 @@ class Monster {
         this.speed = property.speed; // 몬스터의 이동속도
         this.crashDamage = property.crashDamage; // 몬스터 충돌 데미지
         this.score = property.score;
+        this.exp = property.exp; // 몬스터가 주는 경험치
 
         this.init();
     }
@@ -330,6 +384,7 @@ class Monster {
         setTimeout(() => { this.el.remove() }, 200);
         allMonsterComProp.arr.splice(index, 1);
         this.setScore();
+        this.setExp();
     }
 
     // 몬스터 이동
@@ -348,7 +403,7 @@ class Monster {
         let rightDiff = 30; // 히어로 우측 여백
         let leftDiff = 70; // 히어로 왼쪽 여백
         if(hero.position().right - rightDiff > this.position().left && hero.position().left + leftDiff < this.position().right) {
-            hero.updateHp(this.crashDamage);
+            hero.minusHp(this.crashDamage);
         }
     }
 
@@ -356,5 +411,10 @@ class Monster {
     setScore() {
         stageInfo.totalScore += this.score;
         document.querySelector('.score_box').innerText = stageInfo.totalScore;
+    }
+
+    // 경험치
+    setExp() {
+        hero.updateExp(this.exp);
     }
 }
