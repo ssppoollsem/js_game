@@ -418,3 +418,44 @@ class Monster {
         hero.updateExp(this.exp);
     }
 }
+
+// npc 클래스
+class Npc {
+    constructor() {
+        this.parentNode = document.querySelector('.game');
+        this.el = document.createElement('div');
+        this.el.className = 'npc_box';
+        this.npcCrash = false;
+        this.init();
+    }
+
+    init() {
+        let npcTalk = '';
+            npcTalk += '<div class="talk_box">'
+            npcTalk += '<p>큰일이야..<br />사람들이 좀비로 변하고 있어..<br /><span>대화 Enter</span></p>'
+            npcTalk += '</div>'
+            npcTalk += '<div class="npc"></div>';
+        
+        this.el.innerHTML = npcTalk;
+        this.parentNode.appendChild(this.el);
+    }
+
+    // npc 위치
+    position() {
+        return {
+            left: this.el.getBoundingClientRect().left,
+            right: this.el.getBoundingClientRect().right,
+            top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
+            bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
+        }
+    }
+
+    // 히어로 npc 충돌
+    crash() {
+        if(hero.position().right > this.position().left && hero.position().left < this.position().right) {
+            this.npcCrash = true;
+        }else {
+            this.npcCrash = false;
+        }
+    }
+}

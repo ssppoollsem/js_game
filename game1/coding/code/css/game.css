@@ -39,6 +39,11 @@
 .game_over p {display: flex; height:100%; align-items: center; justify-content: center; color: #fff; font-size: 150px}
 .text_damage {position:absolute; left:0; bottom:0; z-index:200; font-family: 'roboto'; font-size: 110px; background: linear-gradient(to bottom, rgba(196,41,30,1) 0%,rgba(230,89,191,1) 100%); -webkit-text-stroke: 5px rgba(255,255,255,.7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textDamage .5s ease-out; animation-fill-mode: forwards}
 .stage_box {position:absolute; left:50%; top:50%; z-index:190; transform:translate(-50%,-50%); font-size:90px; color:#fff; white-space:nowrap; animation: stageStart 1.5s; animation-fill-mode: both}
+.npc_box {position:absolute; left:400px; bottom:0; z-index:90; width:150px; height:182px}
+.npc_box .npc {height:100%; background:url('/game1/lib/images/robot_idle.png'); background-size:1498px 182px; animation: npc_idle .7s infinite steps(10);}
+.npc_box .talk_box {position:absolute; left:60px; bottom:105%; width:150px; color:#222; background-color:#f1f1f1; border:2px solid #555; border-radius:20px}
+.npc_box .talk_box p {padding: 10px;}
+.npc_box .talk_box span {display:block; color:#bf0000; text-align:right; font-size:14px}
 
 /* 게임 캐릭터 대기 모션 */
 @keyframes hero_idle {
@@ -58,12 +63,12 @@
 /* 히어로 충돌 모션 */
 @keyframes hero_crash {
     0% {background-position-x: 0}
-    100% {background-position: -299px}
+    100% {background-position-x: -299px}
 }
 /* 히어로 슬라이드 모션 */
 @keyframes hero_slide {
     0% {background-position-x: 0}
-    100% {background-position: -1498px}
+    100% {background-position-x: -1498px}
 }
 
 /* 몬스터 달리는 모션 */
@@ -97,6 +102,12 @@
     20% {opacity: 1}
     80% {opacity: 1}
     100% {opacity: 0}
+}
+
+/* npc 모션 */
+@keyframes npc_idle {
+    0% {background-position-x: 0}
+    100% {background-position-x: -1498px}
 }
 
 /* will-change : css로 변화될 엘리먼트의 속성값을 브라우저에서 미리 인지하고 준비해 조금 더 부드러운 효과  */

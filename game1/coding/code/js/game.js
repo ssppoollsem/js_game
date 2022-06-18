@@ -47,6 +47,7 @@ const stageInfo = {
 const renderGame = () => {
     hero.keyMotion();
     setGameBackground();
+    npcOne.crash();
     
     bulletComProp.arr.forEach((arr, i) => {
         arr.moveBullet();
@@ -112,11 +113,13 @@ const loadImg = () => {
 }
 
 let hero;
+let npcOne;
 
 // 프로그램 시작에 필요한 함수 또는 메소드
 const init = () => {
     hero = new Hero('.hero');
     stageInfo.stage = new Stage();
+    npcOne = new Npc();
 
     loadImg();
     windowEvent();
