@@ -5,7 +5,8 @@ const key = {
         37: 'left',
         39: 'right',
         88: 'attack',
-        32: 'slide'
+        32: 'slide',
+        13: 'enter'
     }
 }
 
@@ -18,6 +19,11 @@ const allMonsterComProp = {
 const bulletComProp = {
     arr: [],
     launch: false, // 수리검 모션중인지 체크
+}
+
+// 전체 npc 배열 관리
+const allNpcComProp = {
+    arr: []
 }
 
 const gameBackground = {
@@ -47,8 +53,10 @@ const stageInfo = {
 const renderGame = () => {
     hero.keyMotion();
     setGameBackground();
-    npcOne.crash();
-    
+
+    allNpcComProp.arr.forEach((arr,i) => {
+        arr.crash();
+    })
     bulletComProp.arr.forEach((arr, i) => {
         arr.moveBullet();
     })
@@ -87,8 +95,13 @@ const windowEvent = () => {
     window.addEventListener('keydown', e => {
         // 키코드 확인
         // console.log(e.which) 
-        
+
         if(gameProp.gameOver === false) key.keyDown[key.keyValue[e.which]] = true;
+        if(key.keyDown['enter']) {
+            allNpcComProp.arr.forEach((arr,i) => {
+                arr.talk();
+            })
+        }
     })
     
     window.addEventListener('keyup', e => {
@@ -114,12 +127,15 @@ const loadImg = () => {
 
 let hero;
 let npcOne;
+let npcTwo;
 
 // 프로그램 시작에 필요한 함수 또는 메소드
 const init = () => {
     hero = new Hero('.hero');
     stageInfo.stage = new Stage();
-    npcOne = new Npc();
+    npcOne = new Npc(levelQuest);
+    npcTwo = new Npc(levelQuestTwo);
+    allNpcComProp.arr.push(npcOne, npcTwo);
 
     loadImg();
     windowEvent();

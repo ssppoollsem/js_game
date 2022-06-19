@@ -46,7 +46,6 @@ class Stage {
                     this.callMonster();
                     this.level ++;
                 }, 1000)
-                console.log(arr)
                 // this.isStart = false;
             }
         })
@@ -214,9 +213,9 @@ class Hero {
     }
 
     // 히어로 레벨업
-    heroUpgrade() {
-        this.attackDamage += 5000;
-        this.defaultHpValue += 20000;
+    heroUpgrade(upState) {
+        this.attackDamage += upState ? 5000 + upState : 5000;
+        this.defaultHpValue += upState ? 20000 + upState : 20000;
     }
 
     // 히어로 경험치
@@ -421,22 +420,28 @@ class Monster {
 
 // npc 클래스
 class Npc {
-    constructor() {
+    constructor(property) {
+        this.property = property;
         this.parentNode = document.querySelector('.game');
         this.el = document.createElement('div');
         this.el.className = 'npc_box';
         this.npcCrash = false;
+        this.talkOn = false;
+        this.modal = document.querySelector('.quest_modal');
+        this.questStart = false;
+        this.questEnd = false;
         this.init();
     }
 
     init() {
         let npcTalk = '';
             npcTalk += '<div class="talk_box">'
-            npcTalk += '<p>큰일이야..<br />사람들이 좀비로 변하고 있어..<br /><span>대화 Enter</span></p>'
+            npcTalk += this.property.idleMessage
             npcTalk += '</div>'
             npcTalk += '<div class="npc"></div>';
         
         this.el.innerHTML = npcTalk;
+        this.el.style.left = `${this.property.positionX}px`;
         this.parentNode.appendChild(this.el);
     }
 
@@ -456,6 +461,18 @@ class Npc {
             this.npcCrash = true;
         }else {
             this.npcCrash = false;
+        }
+    }
+
+    // npc 대화창
+    talk() {
+        if(!this.talkOn && this.npcCrash) {
+            this.talkOn = true;
+            this.property.quest();
+            this.modal.classList.add('active');
+        }else if(this.talkOn) {
+            this.talkOn = false;
+            this.modal.classList.remove('active');
         }
     }
 }
