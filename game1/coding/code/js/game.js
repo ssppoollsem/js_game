@@ -45,8 +45,9 @@ const stageInfo = {
         {defaultMon: greenMon, bossMon: greenMonBoss},
         {defaultMon: yellowMon, bossMon: yellowMonBoss},
         {defaultMon: pinkMon, bossMon: pinkMonBoss},
+        {defaultMon: pinkMon, bossMon: zombieKing},
     ],
-    callPosition: [1000, 7000, 14000] // 몬스터 소환 포지션
+    callPosition: [3000, 7000, 14000, 21000] // 몬스터 소환 포지션
 }
 
 // 키모션 딜레이 제거
@@ -117,7 +118,7 @@ const windowEvent = () => {
 
 const loadImg = () => {
     // 미리 로드 할 백그라운드 이미지
-    const preLoadImgSrc = ['/game1/lib/images/ninja_attack.png', '/game1/lib/images/ninja_run.png']
+    const preLoadImgSrc = ['/game1/lib/images/ninja_attack.png', '/game1/lib/images/ninja_run.png', '/game1/lib/images/ninja_slide.png']
 
     preLoadImgSrc.forEach(arr => {
         const img = new Image();

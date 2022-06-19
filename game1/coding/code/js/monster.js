@@ -37,6 +37,7 @@ const greenMonBoss = {
     score: 10000,
     exp: 10000
 }
+
 // 엘로우 보스 몬스터
 const yellowMonBoss = {
     name: 'yellow_mon_boss',
@@ -46,6 +47,7 @@ const yellowMonBoss = {
     score: 20000,
     exp: 20000
 }
+
 // 핑크 보스 몬스터
 const pinkMonBoss = {
     name: 'pink_mon_boss',
@@ -54,4 +56,14 @@ const pinkMonBoss = {
     crashDamage: 1000,
     score: 30000,
     exp: 30000
+}
+
+// 좀비왕
+const zombieKing = {
+    name: 'zomibe_king',
+    hpValue: 15100000,
+    speed: 6,
+    crashDamage: 4000,
+    score: 300000,
+    exp: 500000
 }

@@ -1,5 +1,5 @@
 const levelQuest = {
-    positionX: 4500,
+    positionX: 1000,
     idleMessage: '<p>큰일이야..<br />사람들이 좀비로 변하고 있어..<br /><span>대화 Enter</span></p>',
     // npc quest 내용 
     quest: () => {
