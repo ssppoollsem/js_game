@@ -41,3 +41,7 @@ game1
  ┃ ┃ ┣ 📜robot_idle.png
  ┃ ┃ ┗ 📜zombie_run.png
 ```
+
+## 실행방법
+- `vscode`의 라이브서버(Live Server)를 통해 실행
+- 참고 URL : https://stajun.tistory.com/entry/Visual-Studio-Code-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EC%84%9C%EB%B2%84Live-Server-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
